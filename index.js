@@ -16,55 +16,49 @@ import { connectDB } from "./db/connectDB.js";
 dotenv.config();
 const app = express();
 
-const corsConfig = {
-  origin: ["http://localhost:5173","https://room-one-gamma.vercel.app"],
-  credentials: true,
-};
+// Use a single CORS configuration
+const allowedOrigins = ["http://localhost:5173"];
 
-/* const corsOptions = {
+const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    const allowedOrigins = ["http://localhost:5173","https://room-one-gamma.vercel.app"];
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
-}; */
+};
 
-app.use(cors(corsConfig));
-/* app.use(cors(corsOptions)); */
-app.options("*", cors(corsConfig));
+app.use(cors(corsOptions)); // Apply CORS once
+app.options("*", cors(corsOptions)); // Handle pre-flight requests
 
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 5000;
 
-app.get('/', async (req, res) => {
-  /* const host = req.headers.host; */
-  res.send(`Hello 08-29-2024`)
-})
-
-
+// Routes
 app.use("/api/auth", authRoutes);
-
 app.use("/api", usersRoutes);
-
 app.use("/api/bookings", bookingRoutes);
-
 app.use("/api/payment", payments);
-
 app.use("/api/rooms", roomRoutes);
-
 app.use("/api/blogs", blogRoutes);
-
 app.use("/api/category", categoryRoutes);
 
+// Database connection
+const mongodb_uri = process.env.ENV !== 'dev' ? process.env.MONGODB_URL : process.env.MONGODB_URL
+connectDB(mongodb_uri)
 
+
+
+
+
+
+
+// Start server
 app.listen(PORT, () => {
-  connectDB();
+
   console.log("Server listening on port:", PORT);
 });
