@@ -17,14 +17,14 @@ dotenv.config();
 const app = express();
 
 const corsConfig = {
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173","https://room-one-gamma.vercel.app"],
   credentials: true,
 };
 
-const corsOptions = {
+/* const corsOptions = {
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
-    const allowedOrigins = ["http://localhost:5173"];
+    const allowedOrigins = ["http://localhost:5173","https://room-one-gamma.vercel.app"];
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -32,10 +32,10 @@ const corsOptions = {
     }
   },
   credentials: true,
-};
+}; */
 
 app.use(cors(corsConfig));
-app.use(cors(corsOptions));
+/* app.use(cors(corsOptions)); */
 app.options("*", cors(corsConfig));
 
 app.use(bodyParser.json());
