@@ -17,7 +17,7 @@ dotenv.config();
 const app = express();
 
 // Use a single CORS configuration
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["https://room-lagbea.netlify.app/"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -48,17 +48,11 @@ app.use("/api/blogs", blogRoutes);
 app.use("/api/category", categoryRoutes);
 
 // Database connection
-const mongodb_uri = process.env.ENV !== 'dev' ? process.env.MONGODB_URL : process.env.MONGODB_URL
-connectDB(mongodb_uri)
-
-
-
-
-
-
+const mongodb_uri =
+  process.env.ENV !== "dev" ? process.env.MONGODB_URL : process.env.MONGODB_URL;
+connectDB(mongodb_uri);
 
 // Start server
 app.listen(PORT, () => {
-
   console.log("Server listening on port:", PORT);
 });
